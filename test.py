@@ -1,0 +1,32 @@
+from selenium import webdriver
+from selenium.webdriver import ActionChains
+from time import sleep
+
+driver = webdriver.Chrome()
+driver.implicitly_wait(10)
+driver.get('https://www.iconfont.cn/api/login/github')
+login_name = driver.find_element_by_id('login_field')
+login_password = driver.find_element_by_id('password')
+login_name.send_keys('frankHelens')
+login_password.send_keys('fr7983565480.')
+login_submit = driver.find_element_by_class_name('btn')
+login_submit.click()
+driver.get('https://www.iconfont.cn/')
+sleep(1)
+search_input = driver.find_element_by_id('J_search_input_index')
+search_button = driver.find_element_by_class_name('search-type')
+search_input.send_keys('按钮')
+search_button.click()
+sleep(2)
+other_ele = driver.find_element_by_xpath('//*[@id="J_guide_wrapper"]/div[1]/span')
+other_ok = driver.find_element_by_xpath('//*[@id="J_guide_wrapper"]/div[2]/span')
+other_ele.click()
+other_ok.click()
+j_icon = driver.find_element_by_class_name('J_icon_id_3745068')
+ActionChains(driver).move_to_element(j_icon).perform()
+sleep(1)
+downloadItem = driver.find_element_by_xpath('//*[@id="mx_41"]/div[1]/div/ul/li[1]/div[2]/span[3]')
+downloadItem.click()
+
+download = driver.find_element_by_xpath('//*[@id="body_dlg_55"]/div[5]/span[3]')
+download.click()
