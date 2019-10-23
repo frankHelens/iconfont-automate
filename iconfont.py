@@ -1,6 +1,7 @@
 from selenium import webdriver
 from selenium.webdriver import ActionChains
 from time import sleep
+from githubCode import GetGithubCode
 
 class Iconfont:
   def __init__ (self):
@@ -16,11 +17,26 @@ class Iconfont:
     login_password.send_keys('fr7983565480.')
     login_submit = self.driver.find_element_by_class_name('btn')
     login_submit.click()
+    sleep(5)
+    self.checkLogin()
+  def checkLogin(self):
+    url = self.driver.current_url
+    print('current_url', url)
+    if (url == 'https://github.com/sessions/verified-device'):
+      self.setVerified()
+  # 输出邮箱提供的验证码
+  def setVerified (self):
+    code = GetGithubCode().getCode()
+    print(code)
+    verifiedInput = self.driver.find_element_by_id('otp')
+    verifiedSubmit = self.driver.find_element_by_class_name('btn-primary')
+    verifiedInput.send_keys(code)
+    verifiedSubmit.click()
   def toHome (self):
     self.driver.get('https://www.iconfont.cn')
   #def getProject(self):
   
 iconfont = Iconfont()
-iconfont.weiboLogin()
-# iconfont.login()
+# iconfont.weiboLogin()
+iconfont.githubLogin()
 # iconfont.toHome()
