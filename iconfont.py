@@ -7,7 +7,13 @@ import urllib.request
 
 class Iconfont:
   def __init__ (self):
-    self.driver = webdriver.Chrome()
+    #设置Chrome的下载路径到本项目
+    chromeOptions = webdriver.ChromeOptions()
+    prefs = {
+      'download.default_directory': os.getcwd()
+    }
+    chromeOptions.add_experimental_option('prefs', prefs)
+    self.driver = webdriver.Chrome(chrome_options=chromeOptions)
     self.driver.implicitly_wait(10)
   # 微博登录 todo
   def weiboLogin (self):
@@ -21,7 +27,7 @@ class Iconfont:
     login_password.send_keys('fr7983565480.')
     login_submit = self.driver.find_element_by_class_name('btn')
     login_submit.click()
-    sleep(5)
+    sleep(1)
     self.checkLogin()
   # 判断登录是否需要邮箱验证
   def checkLogin(self):
@@ -45,25 +51,21 @@ class Iconfont:
     self.driver.get('https://www.iconfont.cn')
   # 跳转至项目页面
   def toProject (self):
-    self.driver.get('https://www.iconfont.cn/manage/index?manage_type=myproject')
+    self.toHome()
+    iconManager = self.driver.find_element_by_xpath('//*[@id="magix_vf_header"]/header/div/nav/ul/li[3]')
+    ActionChains(self.driver).move_to_element(iconManager).perform()
+    projectButton = self.driver.find_element_by_xpath('//*[@id="magix_vf_header"]/header/div/nav/ul/li[3]/ul[@class="head-dropdown"]/li[3]')
+    projectButton.click()
   # 下载项目
   def downLoadProject(self):
-    downloadUrl = self.driver.find_element_by_partial_link_text('下载至本地')
-    print('downloadUrl', downloadUrl)
-    # 该目录下创建一个文件夹iconfont，判断没有文件夹就创建
-    if not os.path.exists('iconfont'):
-      os.mkdir('logoImg')
-    # 跳到文件夹
-    os.chdir('logoImg')
-    try:
-      urllib.request.urlretrieve(downloadUrl, 'iconfont')
-    except:
-      print('404:%s' % url)
-    else:
-      print('已下载:%s' % url)
-    os.chdir('..')
+    downloadButton = self.driver.find_element_by_partial_link_text('下载至本地')
+    downloadButton.click()
+    # downloadUrl = downloadButton.get_attribute('href')
+    self.quit()
+  # 关闭浏览器
+  def exit(self):
+    self.driver.quit()
 iconfont = Iconfont()
 # iconfont.weiboLogin()
 iconfont.githubLogin()
 iconfont.downLoadProject()
-# iconfont.toHome()
