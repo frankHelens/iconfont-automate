@@ -1,13 +1,23 @@
+'''
+@LastEditors: huangfengrui
+@LastEditTime: 2019-11-21 16:47:55
+@Author: huangfengrui
+@Date: 2019-11-21 09:02:20
+@Description: 
+'''
 import poplib
 import re
+from readConfig import ReadConfig
 
 class GetGithubCode:
+  def __init__(self):
+    config = ReadConfig().getConfig()
   # 此函数通过使用poplib实现接收邮件
   def getEmailContent(self):
     # 要进行邮件接收的邮箱。改成自己的邮箱
-    email_address = "798356548@qq.com"
+    email_address = config.email
     # 要进行邮件接收的邮箱的密码。改成自己的邮箱的密码
-    email_password = "qibovoipsoycbeah"
+    email_password = config.emailPassword
     # 邮箱对应的pop服务器，也可以直接是IP地址
     # 改成自己邮箱的pop服务器；qq邮箱不需要修改此值
     pop_server_host = "pop.qq.com"
